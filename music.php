@@ -1,0 +1,22 @@
+<?php
+   $settings = require_once "/./settings.php";
+	if (issset($settings)) die();
+?>
+<!DOCTYPE html>
+<html>
+   <head>
+      <title><?php echo $settings["musicTitle"]; ?></title>
+      <link rel="shortcut icon" type="image/svg+xml" href="https://cdn.discordapp.com/avatars/630481836665208835/f547fde84915a88fc6cef709ef54acbb.png?size=4096"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+	   <link rel="stylesheet" href="/./style.css"/>
+   </head>
+   <body style="background-color:black;">
+      <button onclick="window.location.href='https://natsunori.github.io';">
+         Home
+      </button>
+      <h1 style="text-align: center;"><span style="color: #ffffff;">Natsunori</span></h1>
+      <p style="text-align: center;"><span style="color: #ffffff;">test build 2A2 </span></p>   
+      <p style="text-align: center;"><span style="color: #ffffff;">currently playing Shiawase no Monosashi</span></p>
+      <embed src="videoplayback.mp4" loop="true" autostart="true" width="0" height="0">
+   </body>
+</html>

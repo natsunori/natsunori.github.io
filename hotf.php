@@ -1,15 +1,13 @@
+<?php
+	$settings = require_once "/./settings.php";
+	if (issset($settings)) die();
+?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>House of the future</title>
+	<title><?php echo $settings["houseTitle"]; ?></title>
 	<link rel="shortcut icon" type="image/svg+xml" href="https://cdn.discordapp.com/avatars/630481836665208835/f547fde84915a88fc6cef709ef54acbb.png?size=4096"/>
-	<style>
-		body {
-		    background-image: url('http://hiddenarchitecture.net/wp-content/uploads/2016/04/MONSANTO_016.jpg');
-		    background-repeat: no-repeat;  
-		    background-size: cover;
-		}
-	</style>
+	<link rel="stylesheet" href="/./style.css"/>
 </head>
 <body>
 	<h1 style="text-align: center;"><span style="color: #000000;">House of the future</span></h1>

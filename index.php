@@ -1,20 +1,14 @@
+<?php
+	$settings = require_once "/./settings.php";
+	if (issset($settings)) die();
+?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Natsunori</title>
+	<title><?php echo $settings["indexTitle"]; ?></title>
 	<link rel="shortcut icon" type="image/svg+xml" href="https://cdn.discordapp.com/avatars/630481836665208835/f547fde84915a88fc6cef709ef54acbb.png?size=4096"/>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<style>
-		body {
-			background-image: url('https://st3.depositphotos.com/19075074/34171/v/600/depositphotos_341710420-stock-illustration-evening-city-panorama-vector-sunset.jpg');
-			background-repeat: no-repeat;
-			background-attachment: fixed;  
-			background-size: cover;
-			width: 100%;
-			height: 100vh;
-		}
-	</style>
+	<link rel="stylesheet" href="/./style.css"/>
 </head>
 <body>
 	<h1 style="text-align: center;"><span style="color: #ffffff;">Natsunori </span></h1>
