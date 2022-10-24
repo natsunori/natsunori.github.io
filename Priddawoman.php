@@ -1,7 +1,11 @@
+<?php
+	$settings = require_once "/./settings.php";
+	if (issset($settings)) die();
+?>
 <!DOCTYPE html>
 <html>
    <head>
-      <title>Natsunori</title>
+      <title><?php echo $settings["priddawomanTitle"]; ?></title>
       <link rel="shortcut icon" type="image/svg+xml" href="https://cdn.discordapp.com/avatars/630481836665208835/f547fde84915a88fc6cef709ef54acbb.png?size=4096"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
       <meta name="viewport" content="width=device-width, initial-scale=1">

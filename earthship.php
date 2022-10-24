@@ -1,7 +1,11 @@
+<?php
+	$settings = require_once "/./settings.php";
+	if (issset($settings)) die();
+?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>House of the future</title>
+	<title><?php echo $settings["earthshipTitle"]; ?></title>
 	<link rel="shortcut icon" type="image/svg+xml" href="https://cdn.discordapp.com/avatars/630481836665208835/f547fde84915a88fc6cef709ef54acbb.png?size=4096"/>
 	<style>
 		body {
