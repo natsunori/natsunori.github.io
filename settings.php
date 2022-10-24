@@ -1,0 +1,4 @@
+<?php
+$settings = (
+  "pageTitle" => "Natunori",
+)
