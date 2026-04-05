@@ -1,10 +1,9 @@
 /* Base styles */
-html {
-    background: #000 !important;
+html, body {
+    background: #0f0514 !important;
 }
 
 body {
-    background: transparent !important;
     color: #fff !important;
     min-height: 100vh;
     display: flex;
@@ -18,11 +17,20 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     z-index: -999;
     background: linear-gradient(160deg, #1a0a1f 0%, #15081a 40%, #0d0512 70%, #120a18 100%);
     pointer-events: none;
+}
+
+/* Override Bulma defaults */
+.hero, .section, .footer, .navbar, .box, .content, .container, nav, main, article, aside, header {
+    background-color: transparent !important;
+}
+
+.navbar-menu, .navbar-start, .navbar-end, .navbar-dropdown {
+    background-color: transparent !important;
 }
 
 /* Navbar */
@@ -30,6 +38,7 @@ body {
     box-shadow: none;
     background: rgba(0,0,0,0.5) !important;
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     margin: 0 !important;
     position: relative;
     z-index: 10;
@@ -44,8 +53,9 @@ body {
 }
 
 /* Hero */
-.hero.is-dark {
+.hero, .hero.is-dark, .hero.is-dark.is-bold {
     background: rgba(0,0,0,0.5) !important;
+    background-color: rgba(0,0,0,0.5) !important;
     margin: 0 !important;
     margin-bottom: 0 !important;
     padding: 0 !important;
@@ -58,8 +68,9 @@ body {
 }
 
 /* Section */
-.section {
+section, .section {
     background: rgba(0,0,0,0.5) !important;
+    background-color: rgba(0,0,0,0.5) !important;
     color: #f3f3f3 !important;
     margin: 0 !important;
     padding: 3rem 1.5rem !important;
@@ -83,10 +94,12 @@ body {
 }
 
 /* Footer */
-.footer {
+footer, .footer {
     background: rgba(0,0,0,0.5) !important;
+    background-color: rgba(0,0,0,0.5) !important;
     color: #f3f3f3 !important;
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     margin: 0 !important;
     margin-top: auto !important;
     padding: 2rem !important;
