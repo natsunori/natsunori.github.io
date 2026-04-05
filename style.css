@@ -9,6 +9,8 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 0;
 }
 
 /* Canvas animated background */
@@ -18,8 +20,9 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1;
+    z-index: -999;
     background: linear-gradient(160deg, #1a0a1f 0%, #15081a 40%, #0d0512 70%, #120a18 100%);
+    pointer-events: none;
 }
 
 /* Navbar */
@@ -28,6 +31,8 @@ body {
     background: rgba(0,0,0,0.5) !important;
     backdrop-filter: blur(8px);
     margin: 0 !important;
+    position: relative;
+    z-index: 10;
 }
 
 .navbar-item {
@@ -44,6 +49,8 @@ body {
     margin: 0 !important;
     margin-bottom: 0 !important;
     padding: 0 !important;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-body {
@@ -57,6 +64,8 @@ body {
     margin: 0 !important;
     padding: 3rem 1.5rem !important;
     flex: 1;
+    position: relative;
+    z-index: 1;
 }
 
 /* Box */
@@ -81,6 +90,8 @@ body {
     margin: 0 !important;
     margin-top: auto !important;
     padding: 2rem !important;
+    position: relative;
+    z-index: 1;
 }
 
 /* Typography */
