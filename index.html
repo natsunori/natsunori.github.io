@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-adsense-account" content="ca-pub-3776575909417313">
+	<meta name="description" content="A portfolio for all of my work including links to all social platforms and game profiles">
+	<meta name="keywords" content="Natsunori,Coding,github,games">
+	<meta name="author" content="Natsunori">
+	<title>Natsunori | Portfolio</title>
+	<link rel="shortcut icon" type="image/svg+xml" href="https://t3.ftcdn.net/jpg/05/36/78/84/360_F_536788448_UcOZv30qCQY36To1ygsjmFmVUaeuc7kf.jpg"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+	<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+	<div class="cursor-glow" id="cursorGlow"></div>
+	<canvas id="cyber-bg"></canvas>
+	<!-- Navbar -->
+	<nav class="navbar is-transparent">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="#">
+				<img src="https://t3.ftcdn.net/jpg/05/36/78/84/360_F_536788448_UcOZv30qCQY36To1ygsjmFmVUaeuc7kf.jpg" alt="Logo" style="height:40px;">
+			</a>
+			<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+		<div id="navbarMenu" class="navbar-menu">
+			<div class="navbar-start">
+				<a class="navbar-item" href="index.html">Home</a>
+				<a class="navbar-item" href="Profiles.html">Profiles</a>
+				<a class="navbar-item" href="specs.html">PC Specs</a>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Hero Section -->
+	<section class="hero is-dark is-bold">
+		<div class="hero-body">
+			<div class="container has-text-centered">
+				<h1 class="title" style="font-size: 3rem;">Natsunori</h1>
+				<h2 class="subtitle">I stream and build home lab projects</h2>
+			</div>
+		</div>
+	</section>
+
+	<!-- osu! & Stream Section -->
+	<section class="section">
+		<div class="container">
+			<div class="columns is-centered is-vcentered">
+				<div class="column is-narrow">
+					<a href="https://osu.ppy.sh/users/22650901" target="_blank" class="osu-card-link">
+						<img src="https://lemmmy.pw/osusig/sig.php?colour=pink&uname=22650901&mode=0&pp=1&flagshadow&xpbar&darktriangles" alt="osu! profile" class="osu-card">
+					</a>
+				</div>
+				<div class="column is-narrow">
+					<div class="stream-status" id="streamStatus">
+						<a href="https://www.twitch.tv/natsunorir" target="_blank" class="stream-link">
+							<i class="fab fa-twitch stream-icon"></i>
+							<div class="stream-info">
+								<span class="stream-name">natsunorir</span>
+								<p class="stream-cta">Watch Stream</p>
+							</div>
+							<div class="stream-indicator">
+								<span class="live-dot"></span>
+								<span class="live-text">LIVE</span>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Projects Section -->
+	<section class="section">
+		<div class="container">
+			<h2 class="title is-3 has-text-centered">Featured Projects</h2>
+			<div class="columns is-multiline is-centered">
+				<div class="column is-4">
+					<div class="box has-text-centered">
+						<h3 class="title is-5">UnifiAP Guardian</h3>
+						<p>UniFi access point monitoring and management tool.</p>
+						<a href="https://github.com/natsunori/UnifiAPgaurdian" class="button-63" target="_blank">View on GitHub</a>
+					</div>
+				</div>
+				<div class="column is-4">
+					<div class="box has-text-centered">
+						<h3 class="title is-5">Glance</h3>
+						<p>Personal dashboard for monitoring services.</p>
+						<a href="https://glance.natsunori.com" class="button-63" target="_blank">Visit Dashboard</a>
+					</div>
+				</div>
+				<div class="column is-4">
+					<div class="box has-text-centered">
+						<h3 class="title is-5">NSNDEVENV</h3>
+						<p>Development environment monitoring.</p>
+						<a href="https://mon.natsunori.com" class="button-63" target="_blank">Visit</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- About Section -->
+	<section class="section">
+		<div class="container">
+			<h2 class="title is-3 has-text-centered">About Me</h2>
+			<div class="columns is-centered">
+				<div class="column is-8">
+					<div class="box about-box">
+						<p class="about-text">
+							Hey! I'm a Engineer and streamer passionate about building homelab projects and 
+							networking.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Tech Stack Section -->
+	<section class="section">
+		<div class="container has-text-centered">
+			<h2 class="title is-3">Tech Stack</h2>
+			<div class="tech-grid">
+				<div class="tech-item">
+					<i class="fab fa-python"></i>
+					<span>Python</span>
+				</div>
+				<div class="tech-item">
+					<i class="fab fa-js"></i>
+					<span>JavaScript</span>
+				</div>
+				<div class="tech-item">
+					<i class="fab fa-docker"></i>
+					<span>Docker</span>
+				</div>
+				<div class="tech-item">
+					<i class="fab fa-linux"></i>
+					<span>Linux</span>
+				</div>
+				<div class="tech-item">
+					<i class="fas fa-network-wired"></i>
+					<span>Networking</span>
+				</div>
+				<div class="tech-item">
+					<i class="fab fa-github"></i>
+					<span>Git</span>
+				</div>
+			</div>
+			
+			<h3 class="title is-5" style="margin-top: 2.5rem;">Running Containers</h3>
+			<div class="container-scroll-wrapper">
+				<div class="container-scroll">
+					<span class="container-item"><i class="fas fa-heartbeat"></i> Uptime-Kuma</span>
+					<span class="container-item"><i class="fab fa-docker"></i> Portainer</span>
+					<span class="container-item"><i class="fas fa-anchor"></i> Marlinspike-app</span>
+					<span class="container-item"><i class="fas fa-database"></i> Marlinspike-db</span>
+					<span class="container-item"><i class="fas fa-gamepad"></i> Playit</span>
+					<span class="container-item"><i class="fas fa-home"></i> Minecraft</span>
+					<span class="container-item"><i class="fas fa-play-circle"></i> Plex</span>
+					<span class="container-item"><i class="fas fa-shield-alt"></i> Adguardhome</span>
+					<span class="container-item"><i class="fas fa-cloud"></i> Cloudflared</span>
+					<span class="container-item"><i class="fas fa-house-user"></i> Homeassistant</span>
+					<span class="container-item"><i class="fas fa-th-large"></i> Glance</span>
+					<span class="container-item"><i class="fas fa-wifi"></i> Unifi-Controller</span>
+					<span class="container-item"><i class="fas fa-tachometer-alt"></i> Glances</span>
+					<!-- Duplicate for seamless loop -->
+					<span class="container-item"><i class="fas fa-heartbeat"></i> Uptime-Kuma</span>
+					<span class="container-item"><i class="fab fa-docker"></i> Portainer</span>
+					<span class="container-item"><i class="fas fa-anchor"></i> Marlinspike-app</span>
+					<span class="container-item"><i class="fas fa-database"></i> Marlinspike-db</span>
+					<span class="container-item"><i class="fas fa-gamepad"></i> Playit</span>
+					<span class="container-item"><i class="fas fa-home"></i> Minecraft</span>
+					<span class="container-item"><i class="fas fa-play-circle"></i> Plex</span>
+					<span class="container-item"><i class="fas fa-shield-alt"></i> Adguardhome</span>
+					<span class="container-item"><i class="fas fa-cloud"></i> Cloudflared</span>
+					<span class="container-item"><i class="fas fa-house-user"></i> Homeassistant</span>
+					<span class="container-item"><i class="fas fa-th-large"></i> Glance</span>
+					<span class="container-item"><i class="fas fa-wifi"></i> Unifi-Controller</span>
+					<span class="container-item"><i class="fas fa-tachometer-alt"></i> Glances</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- GitHub Stats Section -->
+	<section class="section">
+		<div class="container has-text-centered">
+			<h2 class="title is-3">GitHub Stats</h2>
+			<div class="github-stats">
+				<a href="https://github.com/natsunori" target="_blank">
+					<img src="https://github-readme-streak-stats.herokuapp.com/?user=natsunori&theme=radical&background=0f0514&hide_border=true" alt="GitHub Streak" class="github-card">
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="content has-text-centered">
+			<p>Powered by <a href="https://mon.natsunori.com">NSNDEVENV</a></p>
+			<p>&copy; 2026 Natsunori. All rights reserved.</p>
+		</div>
+	</footer>
+
+	<script src="script.js"></script>
+	<script src="cyber-bg.js"></script>
+</body>
+</html>
