@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" style="background: #0f0514 !important;">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Natsunori | Ghostface Kills</title>
+	<link rel="shortcut icon" type="image/svg+xml" href="https://t3.ftcdn.net/jpg/05/36/78/84/360_F_536788448_UcOZv30qCQY36To1ygsjmFmVUaeuc7kf.jpg"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+	<link rel="stylesheet" href="style.css"/>
+	<style>
+		/* Ghostface Gallery Styles */
+		.gallery-container {
+			position: relative;
+			width: 100%;
+			max-width: 900px;
+			margin: 0 auto;
+			aspect-ratio: 16/9;
+			border-radius: 16px;
+			overflow: hidden;
+			box-shadow: 0 0 50px rgba(255, 0, 0, 0.3);
+			border: 2px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.gallery-slide {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+			transition: opacity 1s ease-in-out;
+			background-size: cover;
+			background-position: center;
+		}
+
+		.gallery-slide.active {
+			opacity: 1;
+		}
+
+		.gallery-slide img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.gallery-overlay {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+			padding: 2rem;
+			text-align: center;
+		}
+
+		.kill-counter {
+			font-size: 1.2rem;
+			color: #ff4444 !important;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+		}
+
+		.gallery-controls {
+			display: flex;
+			justify-content: center;
+			gap: 1rem;
+			margin-top: 1.5rem;
+		}
+
+		.gallery-btn {
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			color: #fff;
+			padding: 0.8rem 1.5rem;
+			border-radius: 8px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			font-size: 1rem;
+		}
+
+		.gallery-btn:hover {
+			background: rgba(255, 0, 0, 0.3);
+			border-color: rgba(255, 0, 0, 0.5);
+		}
+
+		.gallery-btn.active {
+			background: rgba(255, 0, 0, 0.4);
+			border-color: #ff4444;
+		}
+
+		.gallery-dots {
+			display: flex;
+			justify-content: center;
+			gap: 0.5rem;
+			margin-top: 1rem;
+		}
+
+		.gallery-dot {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.3);
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.gallery-dot.active {
+			background: #ff4444;
+			box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+		}
+
+		.ghostface-title {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+		}
+
+		.ghostface-title i {
+			color: #ff4444 !important;
+			font-size: 2rem;
+		}
+
+		.upload-note {
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px dashed rgba(255, 255, 255, 0.2);
+			border-radius: 12px;
+			padding: 1.5rem;
+			margin-top: 2rem;
+			font-size: 0.9rem;
+			color: rgba(255, 255, 255, 0.6) !important;
+		}
+
+		.upload-note code {
+			background: rgba(0, 0, 0, 0.3);
+			padding: 0.2rem 0.5rem;
+			border-radius: 4px;
+			color: #00DDEB !important;
+		}
+	</style>
+</head>
+<body style="background: transparent !important;">
+	<canvas id="cyber-bg"></canvas>
+	<!-- Navbar -->
+	<nav class="navbar is-transparent">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="index.html">
+				<img src="https://t3.ftcdn.net/jpg/05/36/78/84/360_F_536788448_UcOZv30qCQY36To1ygsjmFmVUaeuc7kf.jpg" alt="Logo" style="height:40px;">
+			</a>
+			<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+		<div id="navbarMenu" class="navbar-menu">
+			<div class="navbar-start">
+				<a class="navbar-item" href="index.html">Home</a>
+				<a class="navbar-item" href="Profiles.html">Profiles</a>
+				<a class="navbar-item" href="specs.html">PC Specs</a>
+				<a class="navbar-item" href="ghostface.html">Ghostface Kills</a>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Gallery Section -->
+	<section class="section">
+		<div class="container has-text-centered">
+			<div class="ghostface-title">
+				<i class="fas fa-skull"></i>
+				<h1 class="title is-2">Ghostface Kills</h1>
+				<i class="fas fa-skull"></i>
+			</div>
+			<p class="subtitle is-5" style="margin-bottom: 2rem;">Dead by Daylight highlights</p>
+
+			<div class="gallery-container" id="gallery">
+				<!-- Slides will be populated by JS -->
+				<!-- Add your image URLs to the array in the script below -->
+			</div>
+
+			<div class="gallery-controls">
+				<button class="gallery-btn" id="prevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+				<button class="gallery-btn" id="playPauseBtn"><i class="fas fa-pause"></i> Pause</button>
+				<button class="gallery-btn" id="nextBtn">Next <i class="fas fa-chevron-right"></i></button>
+			</div>
+
+			<div class="gallery-dots" id="galleryDots"></div>
+
+			<div class="upload-note">
+				<p><i class=""></i> <strong>Why is this here?</strong></p>
+				<p>I play alot of dbd and i kinda just wanted a slideshow of all the moris i have with ghostie <span>:)</span>.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="content has-text-centered">
+			<p>Powered by <a href="https://mon.natsunori.com">NSNDEVENV</a></p>
+			<p>&copy; 2026 Natsunori. All rights reserved.</p>
+		</div>
+	</footer>
+
+	<script src="script.js"></script>
+	<script src="cyber-bg.js"></script>
+	<script>
+
+		const killImages = [
+			'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512284/20260307004516_1_hzboq5.jpg',
+			'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512284/20260309201617_1_wftubr.jpg',
+			'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512285/20260309201408_1_zszj8q.jpg',
+			'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512285/20260309202840_1_n1a5rg.jpg',
+			'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512285/20260406214521_1_gdvlud.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512284/20260301163539_1_bu2q6p.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512284/20260301145519_1_snfpwb.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512284/20260307004302_1_qfpujm.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512284/20260301161638_1_tz2q1m.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512284/20260307002622_1_q1c3uz.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512284/20260301135259_1_el5lqo.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512283/20260301142950_1_tbb8d2.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512283/20260307003001_1_c6bqec.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512283/20260301141101_1_fbkmod.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512283/20260307000108_1_hodplm.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512283/20260228215510_1_s27pwl.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512283/20260228200532_1_mhdorc.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512283/20260228211509_1_fywep7.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512283/20260306235935_1_vfqih7.jpg',
+            'https://res.cloudinary.com/ddhgxoodw/image/upload/v1775512283/20260228204232_1_sk51nx.jpg',
+            //'',
+            //'',
+           // '',
+           // '',
+           // placeholders for future uploads
+		];
+
+		// Gallery functionality
+		const gallery = document.getElementById('gallery');
+		const dotsContainer = document.getElementById('galleryDots');
+		const playPauseBtn = document.getElementById('playPauseBtn');
+		let currentSlide = 0;
+		let isPlaying = true;
+		let slideInterval;
+
+		// Create slides
+		killImages.forEach((url, index) => {
+			const slide = document.createElement('div');
+			slide.className = 'gallery-slide' + (index === 0 ? ' active' : '');
+			slide.innerHTML = `
+				<img src="${url}" alt="Ghostface Kill ${index + 1}" loading="lazy">
+				<div class="gallery-overlay">
+					<span class="kill-counter">Kill ${index + 1} of ${killImages.length}</span>
+				</div>
+			`;
+			gallery.appendChild(slide);
+
+			const dot = document.createElement('div');
+			dot.className = 'gallery-dot' + (index === 0 ? ' active' : '');
+			dot.addEventListener('click', () => goToSlide(index));
+			dotsContainer.appendChild(dot);
+		});
+
+		const slides = document.querySelectorAll('.gallery-slide');
+		const dots = document.querySelectorAll('.gallery-dot');
+
+		function goToSlide(index) {
+			slides[currentSlide].classList.remove('active');
+			dots[currentSlide].classList.remove('active');
+			currentSlide = index;
+			if (currentSlide >= slides.length) currentSlide = 0;
+			if (currentSlide < 0) currentSlide = slides.length - 1;
+			slides[currentSlide].classList.add('active');
+			dots[currentSlide].classList.add('active');
+		}
+
+		function nextSlide() {
+			goToSlide(currentSlide + 1);
+		}
+
+		function prevSlide() {
+			goToSlide(currentSlide - 1);
+		}
+
+		function startSlideshow() {
+			slideInterval = setInterval(nextSlide, 3000);
+		}
+
+		function stopSlideshow() {
+			clearInterval(slideInterval);
+		}
+
+		function togglePlayPause() {
+			if (isPlaying) {
+				stopSlideshow();
+				playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+				playPauseBtn.classList.remove('active');
+			} else {
+				startSlideshow();
+				playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+				playPauseBtn.classList.add('active');
+			}
+			isPlaying = !isPlaying;
+		}
+
+		document.getElementById('nextBtn').addEventListener('click', () => {
+			nextSlide();
+			if (isPlaying) {
+				stopSlideshow();
+				startSlideshow();
+			}
+		});
+
+		document.getElementById('prevBtn').addEventListener('click', () => {
+			prevSlide();
+			if (isPlaying) {
+				stopSlideshow();
+				startSlideshow();
+			}
+		});
+
+		playPauseBtn.addEventListener('click', togglePlayPause);
+		playPauseBtn.classList.add('active');
+
+		// Start autoplay
+		startSlideshow();
+	</script>
+</body>
+</html>
