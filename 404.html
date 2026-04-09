@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" style="background: #0f0514 !important;">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Natsunori | 404 — Signal Lost</title>
+	<link rel="shortcut icon" type="image/svg+xml" href="https://t3.ftcdn.net/jpg/05/36/78/84/360_F_536788448_UcOZv30qCQY36To1ygsjmFmVUaeuc7kf.jpg"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+	<link rel="stylesheet" href="style.css"/>
+	<style>
+		/* 404 Page Styles */
+		.error-section {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: calc(100vh - 52px - 100px);
+			padding: 2rem;
+		}
+
+		.error-container {
+			text-align: center;
+			max-width: 700px;
+		}
+
+		/* Glitch Effect */
+		.glitch-wrapper {
+			position: relative;
+			display: inline-block;
+			margin-bottom: 1rem;
+		}
+
+		.glitch {
+			font-size: 8rem;
+			font-weight: 900;
+			color: #fff;
+			position: relative;
+			letter-spacing: 0.1em;
+			font-family: 'Courier New', monospace;
+			text-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+		}
+
+		.glitch::before,
+		.glitch::after {
+			content: attr(data-text);
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.glitch::before {
+			color: #ff00ff;
+			animation: glitch-1 2s infinite linear alternate-reverse;
+			clip-path: inset(0 0 60% 0);
+		}
+
+		.glitch::after {
+			color: #00ffff;
+			animation: glitch-2 2s infinite linear alternate-reverse;
+			clip-path: inset(40% 0 0 0);
+		}
+
+		@keyframes glitch-1 {
+			0% { transform: translate(0); }
+			20% { transform: translate(-3px, 3px); }
+			40% { transform: translate(-3px, -3px); }
+			60% { transform: translate(3px, 3px); }
+			80% { transform: translate(3px, -3px); }
+			100% { transform: translate(0); }
+		}
+
+		@keyframes glitch-2 {
+			0% { transform: translate(0); }
+			20% { transform: translate(3px, -3px); }
+			40% { transform: translate(3px, 3px); }
+			60% { transform: translate(-3px, -3px); }
+			80% { transform: translate(-3px, 3px); }
+			100% { transform: translate(0); }
+		}
+
+		.signal-lost {
+			font-size: 1.8rem;
+			font-family: 'Courier New', monospace;
+			color: #ff4444 !important;
+			letter-spacing: 0.3em;
+			text-transform: uppercase;
+			margin-bottom: 2rem;
+			animation: flicker 3s infinite;
+		}
+
+		@keyframes flicker {
+			0%, 100% { opacity: 1; }
+			92% { opacity: 1; }
+			93% { opacity: 0.2; }
+			94% { opacity: 1; }
+			96% { opacity: 0.3; }
+			97% { opacity: 1; }
+		}
+
+		/* Terminal */
+		.terminal {
+			background: rgba(0, 0, 0, 0.6);
+			border: 1px solid rgba(0, 221, 235, 0.3);
+			border-radius: 12px;
+			padding: 1.5rem 2rem;
+			text-align: left;
+			font-family: 'Courier New', monospace;
+			font-size: 0.95rem;
+			margin: 2rem auto;
+			max-width: 550px;
+			box-shadow: 0 0 30px rgba(0, 221, 235, 0.1), inset 0 0 30px rgba(0, 0, 0, 0.3);
+			position: relative;
+			overflow: hidden;
+		}
+
+		.terminal::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 30px;
+			background: rgba(0, 221, 235, 0.08);
+			border-bottom: 1px solid rgba(0, 221, 235, 0.15);
+		}
+
+		.terminal-dots {
+			position: absolute;
+			top: 8px;
+			left: 12px;
+			display: flex;
+			gap: 6px;
+		}
+
+		.terminal-dots span {
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+		}
+
+		.terminal-dots span:nth-child(1) { background: #ff5f57; }
+		.terminal-dots span:nth-child(2) { background: #ffbd2e; }
+		.terminal-dots span:nth-child(3) { background: #28c840; }
+
+		.terminal-body {
+			margin-top: 1.5rem;
+		}
+
+		.terminal-line {
+			margin-bottom: 0.4rem;
+			line-height: 1.6;
+			opacity: 0;
+			animation: typeIn 0.05s forwards;
+		}
+
+		.terminal-line .prompt {
+			color: #28c840 !important;
+		}
+
+		.terminal-line .command {
+			color: #fff !important;
+		}
+
+		.terminal-line .output {
+			color: #ff4444 !important;
+		}
+
+		.terminal-line .info {
+			color: #00DDEB !important;
+		}
+
+		.terminal-line .dim {
+			color: rgba(255, 255, 255, 0.4) !important;
+		}
+
+		.cursor-blink {
+			display: inline-block;
+			width: 8px;
+			height: 1.1em;
+			background: #28c840;
+			vertical-align: text-bottom;
+			animation: blink 1s step-end infinite;
+		}
+
+		@keyframes blink {
+			0%, 100% { opacity: 1; }
+			50% { opacity: 0; }
+		}
+
+		@keyframes typeIn {
+			to { opacity: 1; }
+		}
+
+		/* Scanlines */
+		.scanlines {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+			z-index: 100;
+			background: repeating-linear-gradient(
+				0deg,
+				rgba(0, 0, 0, 0.05) 0px,
+				rgba(0, 0, 0, 0.05) 1px,
+				transparent 1px,
+				transparent 3px
+			);
+			opacity: 0.4;
+		}
+
+		/* Home button */
+		.home-btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.7rem;
+			margin-top: 2rem;
+			padding: 1rem 2.5rem;
+			background: rgba(0, 221, 235, 0.1);
+			border: 1px solid rgba(0, 221, 235, 0.4);
+			border-radius: 8px;
+			color: #00DDEB !important;
+			font-family: 'Courier New', monospace;
+			font-size: 1.1rem;
+			text-decoration: none !important;
+			transition: all 0.3s ease;
+			letter-spacing: 0.05em;
+		}
+
+		.home-btn:hover {
+			background: rgba(0, 221, 235, 0.2);
+			border-color: #00DDEB;
+			box-shadow: 0 0 20px rgba(0, 221, 235, 0.3);
+			transform: translateY(-2px);
+			color: #fff !important;
+		}
+
+		/* Responsive */
+		@media (max-width: 768px) {
+			.glitch {
+				font-size: 5rem;
+			}
+			.signal-lost {
+				font-size: 1.2rem;
+				letter-spacing: 0.15em;
+			}
+			.terminal {
+				font-size: 0.8rem;
+				padding: 1rem 1.2rem;
+			}
+		}
+	</style>
+</head>
+<body style="background: transparent !important;">
+	<div class="scanlines"></div>
+	<canvas id="cyber-bg"></canvas>
+
+	<!-- Navbar -->
+	<nav class="navbar is-transparent">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="index.html">
+				<img src="https://t3.ftcdn.net/jpg/05/36/78/84/360_F_536788448_UcOZv30qCQY36To1ygsjmFmVUaeuc7kf.jpg" alt="Logo" style="height:40px;">
+			</a>
+			<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+		<div id="navbarMenu" class="navbar-menu">
+			<div class="navbar-start">
+				<a class="navbar-item" href="index.html">Home</a>
+				<a class="navbar-item" href="Profiles.html">Profiles</a>
+				<a class="navbar-item" href="specs.html">PC Specs</a>
+				<a class="navbar-item" href="ghostface.html">Ghostface Kills</a>
+			</div>
+		</div>
+	</nav>
+
+	<!-- 404 Content -->
+	<section class="error-section">
+		<div class="error-container">
+			<div class="glitch-wrapper">
+				<div class="glitch" data-text="404">404</div>
+			</div>
+			<div class="signal-lost">— SIGNAL LOST —</div>
+
+			<!-- Terminal Animation -->
+			<div class="terminal">
+				<div class="terminal-dots">
+					<span></span><span></span><span></span>
+				</div>
+				<div class="terminal-body" id="terminalBody">
+					<!-- Lines injected by JS -->
+				</div>
+			</div>
+
+			<a href="index.html" class="home-btn">
+				<i class="fas fa-arrow-left"></i> Return to Base
+			</a>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="content has-text-centered">
+			<p>Powered by <a href="https://mon.natsunori.com">NSNDEVENV</a></p>
+			<p>&copy; 2026 Natsunori. All rights reserved.</p>
+		</div>
+	</footer>
+
+	<script src="script.js"></script>
+	<script src="cyber-bg.js"></script>
+	<script>
+		// Terminal typing animation
+		const terminalLines = [
+			{ type: 'input', prompt: 'natsunori@server:~$', command: ' curl -I ' + window.location.pathname },
+			{ type: 'output', text: 'HTTP/1.1 404 Not Found' },
+			{ type: 'info', text: 'ERROR: Route not found in network' },
+			{ type: 'blank' },
+			{ type: 'input', prompt: 'natsunori@server:~$', command: ' traceroute ' + window.location.pathname },
+			{ type: 'dim', text: '1  gateway (10.0.0.1)  1.234 ms' },
+			{ type: 'dim', text: '2  natsunori.com (104.21.x.x)  12.567 ms' },
+			{ type: 'output', text: '3  * * * Request timed out.' },
+			{ type: 'blank' },
+			{ type: 'input', prompt: 'natsunori@server:~$', command: ' echo "Returning to base..."' },
+			{ type: 'info', text: 'Returning to base...' },
+			{ type: 'cursor' }
+		];
+
+		const terminalBody = document.getElementById('terminalBody');
+		let lineIndex = 0;
+
+		function addTerminalLine() {
+			if (lineIndex >= terminalLines.length) return;
+
+			const line = terminalLines[lineIndex];
+			const div = document.createElement('div');
+			div.className = 'terminal-line';
+
+			if (line.type === 'input') {
+				div.innerHTML = `<span class="prompt">${line.prompt}</span><span class="command">${line.command}</span>`;
+			} else if (line.type === 'output') {
+				div.innerHTML = `<span class="output">${line.text}</span>`;
+			} else if (line.type === 'info') {
+				div.innerHTML = `<span class="info">${line.text}</span>`;
+			} else if (line.type === 'dim') {
+				div.innerHTML = `<span class="dim">${line.text}</span>`;
+			} else if (line.type === 'blank') {
+				div.innerHTML = '&nbsp;';
+			} else if (line.type === 'cursor') {
+				div.innerHTML = `<span class="prompt">natsunori@server:~$</span> <span class="cursor-blink"></span>`;
+			}
+
+			// Stagger animation delay
+			div.style.animationDelay = `${lineIndex * 0.3}s`;
+			terminalBody.appendChild(div);
+
+			lineIndex++;
+			const delay = line.type === 'input' ? 600 : line.type === 'blank' ? 200 : 350;
+			setTimeout(addTerminalLine, delay);
+		}
+
+		// Start terminal animation after a brief pause
+		setTimeout(addTerminalLine, 800);
+	</script>
+</body>
+</html>
