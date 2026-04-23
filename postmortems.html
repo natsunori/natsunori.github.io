@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" style="background: #0f0514 !important;">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-adsense-account" content="ca-pub-3776575909417313">
+	<title>Natsunori | Incident Post Mortems</title>
+	<link rel="shortcut icon" type="image/svg+xml" href="https://t3.ftcdn.net/jpg/05/36/78/84/360_F_536788448_UcOZv30qCQY36To1ygsjmFmVUaeuc7kf.jpg"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+	<link rel="stylesheet" href="style.css"/>
+	<style>
+		/* Post Mortem Specific Styles */
+		.postmortem-container {
+			max-width: 900px;
+			margin: 0 auto;
+		}
+
+		.postmortem-card {
+			background: rgba(255, 255, 255, 0.05) !important;
+			border: 1px solid rgba(255, 182, 193, 0.2);
+			border-left: 4px solid rgba(255, 69, 68, 0.6);
+			border-radius: 12px;
+			padding: 2rem;
+			margin-bottom: 2rem;
+			transition: all 0.3s ease;
+			backdrop-filter: blur(4px);
+		}
+
+		.postmortem-card:hover {
+			background: rgba(255, 255, 255, 0.08) !important;
+			border-left-color: rgba(255, 69, 68, 0.9);
+			box-shadow: 0 8px 30px rgba(255, 69, 68, 0.15);
+		}
+
+		.postmortem-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			margin-bottom: 1.5rem;
+			padding-bottom: 1rem;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.postmortem-title {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: #fff !important;
+			margin: 0;
+			display: flex;
+			align-items: center;
+			gap: 0.8rem;
+		}
+
+		.postmortem-title i {
+			color: #FF4544 !important;
+		}
+
+		.postmortem-metadata {
+			display: flex;
+			gap: 2rem;
+			flex-wrap: wrap;
+			font-size: 0.9rem;
+		}
+
+		.postmortem-meta-item {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			color: rgba(255, 255, 255, 0.6) !important;
+		}
+
+		.postmortem-meta-item i {
+			color: #FFB6C1 !important;
+			font-size: 1rem;
+		}
+
+		.postmortem-severity {
+			display: inline-block;
+			padding: 0.4rem 0.8rem;
+			border-radius: 6px;
+			font-weight: 600;
+			font-size: 0.85rem;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+
+		.severity-critical {
+			background: rgba(255, 69, 68, 0.2);
+			color: #FF4544 !important;
+			border: 1px solid rgba(255, 69, 68, 0.4);
+		}
+
+		.severity-high {
+			background: rgba(255, 152, 0, 0.2);
+			color: #FF9800 !important;
+			border: 1px solid rgba(255, 152, 0, 0.4);
+		}
+
+		.severity-medium {
+			background: rgba(255, 193, 7, 0.2);
+			color: #FFC107 !important;
+			border: 1px solid rgba(255, 193, 7, 0.4);
+		}
+
+		.postmortem-section {
+			margin-bottom: 1.5rem;
+		}
+
+		.postmortem-section-title {
+			font-weight: 600;
+			color: #FFB6C1 !important;
+			margin-bottom: 0.8rem;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			font-size: 1.1rem;
+		}
+
+		.postmortem-section-title i {
+			color: #FFB6C1 !important;
+			font-size: 1rem;
+		}
+
+		.postmortem-summary {
+			color: rgba(255, 255, 255, 0.8) !important;
+			line-height: 1.6;
+		}
+
+		.timeline-item {
+			padding-left: 2rem;
+			margin-bottom: 1rem;
+			position: relative;
+			color: rgba(255, 255, 255, 0.7) !important;
+		}
+
+		.timeline-item::before {
+			content: '';
+			position: absolute;
+			left: 0.2rem;
+			top: 0.3rem;
+			width: 12px;
+			height: 12px;
+			background: #FFB6C1;
+			border-radius: 50%;
+			border: 2px solid rgba(255, 182, 193, 0.3);
+		}
+
+		.timeline-time {
+			font-weight: 600;
+			color: #FFB6C1 !important;
+			font-size: 0.9rem;
+		}
+
+		.action-item {
+			padding: 0.8rem;
+			margin-bottom: 0.8rem;
+			background: rgba(0, 150, 255, 0.08);
+			border-left: 3px solid rgba(0, 150, 255, 0.3);
+			border-radius: 4px;
+			color: rgba(255, 255, 255, 0.8) !important;
+		}
+
+		.action-item.completed {
+			opacity: 0.6;
+			background: rgba(0, 150, 255, 0.05);
+		}
+
+		.action-item.completed::before {
+			content: '✓ ';
+			color: #00DD00 !important;
+			font-weight: bold;
+		}
+
+		.learning-item {
+			padding: 0.8rem;
+			margin-bottom: 0.8rem;
+			background: rgba(255, 182, 193, 0.08);
+			border-left: 3px solid rgba(255, 182, 193, 0.3);
+			border-radius: 4px;
+			color: rgba(255, 255, 255, 0.8) !important;
+		}
+
+		.learning-item::before {
+			content: '💡 ';
+			margin-right: 0.5rem;
+		}
+
+		.filter-buttons {
+			display: flex;
+			gap: 1rem;
+			margin-bottom: 2rem;
+			justify-content: center;
+			flex-wrap: wrap;
+		}
+
+		.filter-btn {
+			padding: 0.6rem 1.2rem;
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			color: #fff !important;
+			border-radius: 8px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			font-size: 0.9rem;
+		}
+
+		.filter-btn:hover,
+		.filter-btn.active {
+			background: rgba(255, 182, 193, 0.2);
+			border-color: rgba(255, 182, 193, 0.4);
+			color: #FFB6C1 !important;
+		}
+
+		/* Modal Styles */
+		.modal-overlay {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.8);
+			z-index: 1000;
+			justify-content: center;
+			align-items: center;
+			padding: 1rem;
+		}
+
+		.modal-overlay.active {
+			display: flex;
+		}
+
+		.modal-content {
+			background: #0f0514;
+			border: 1px solid rgba(255, 182, 193, 0.2);
+			border-radius: 16px;
+			padding: 2rem;
+			max-width: 800px;
+			max-height: 85vh;
+			overflow-y: auto;
+			position: relative;
+			box-shadow: 0 0 50px rgba(255, 105, 180, 0.3);
+		}
+
+		.modal-close {
+			position: absolute;
+			top: 1.5rem;
+			right: 1.5rem;
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			color: #fff;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			font-size: 1.5rem;
+			transition: all 0.3s ease;
+		}
+
+		.modal-close:hover {
+			background: rgba(255, 182, 193, 0.2);
+			border-color: rgba(255, 182, 193, 0.4);
+		}
+
+		.modal-title {
+			font-size: 1.8rem;
+			font-weight: 700;
+			color: #FFB6C1 !important;
+			margin-bottom: 1.5rem;
+			margin-right: 2rem;
+		}
+
+		.modal-body {
+			color: rgba(255, 255, 255, 0.8) !important;
+			line-height: 1.8;
+			font-size: 0.95rem;
+		}
+
+		.modal-body h3 {
+			color: #FFB6C1 !important;
+			font-size: 1.2rem;
+			margin-top: 1.5rem;
+			margin-bottom: 0.8rem;
+			font-weight: 600;
+		}
+
+		.modal-body h4 {
+			color: #FFB6C1 !important;
+			font-size: 1.05rem;
+			margin-top: 1rem;
+			margin-bottom: 0.6rem;
+			font-weight: 600;
+		}
+
+		.modal-body p {
+			margin-bottom: 1rem;
+		}
+
+		.modal-body ul, .modal-body ol {
+			margin-left: 1.5rem;
+			margin-bottom: 1rem;
+		}
+
+		.modal-body li {
+			margin-bottom: 0.5rem;
+			color: rgba(255, 255, 255, 0.8) !important;
+		}
+
+		.report-btn {
+			background: rgba(0, 220, 235, 0.15);
+			border: 1px solid rgba(0, 220, 235, 0.3);
+			color: #00DDEB !important;
+			padding: 0.6rem 1.2rem;
+			border-radius: 8px;
+			cursor: pointer;
+			font-size: 0.9rem;
+			transition: all 0.3s ease;
+			margin-top: 1rem;
+		}
+
+		.report-btn:hover {
+			background: rgba(0, 220, 235, 0.25);
+			border-color: rgba(0, 220, 235, 0.5);
+		}
+
+		@media (max-width: 768px) {
+			.postmortem-card {
+				padding: 1.5rem;
+			}
+
+			.postmortem-header {
+				flex-direction: column;
+			}
+
+			.postmortem-metadata {
+				gap: 1rem;
+				margin-top: 1rem;
+			}
+
+			.filter-buttons {
+				gap: 0.5rem;
+			}
+
+			.filter-btn {
+				padding: 0.5rem 1rem;
+				font-size: 0.8rem;
+			}
+
+			.modal-content {
+				padding: 1.5rem;
+				max-height: 90vh;
+			}
+
+			.modal-title {
+				font-size: 1.3rem;
+			}
+
+			.modal-body {
+				font-size: 0.9rem;
+			}
+		}
+	</style>
+</head>
+<body style="background: transparent !important;">
+	<canvas id="cyber-bg"></canvas>
+	<!-- Navbar -->
+	<nav class="navbar is-transparent">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="index.html">
+				<img src="https://t3.ftcdn.net/jpg/05/36/78/84/360_F_536788448_UcOZv30qCQY36To1ygsjmFmVUaeuc7kf.jpg" alt="Logo" style="height:40px;">
+			</a>
+			<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+		<div id="navbarMenu" class="navbar-menu">
+			<div class="navbar-start">
+				<a class="navbar-item" href="index.html">Home</a>
+				<a class="navbar-item" href="Profiles.html">Profiles</a>
+				<a class="navbar-item" href="specs.html">PC Specs</a>
+				<a class="navbar-item" href="postmortems.html">Post Mortems</a>
+				<a class="navbar-item" href="ghostface.html">Ghostface Kills</a>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Post Mortems Section -->
+	<section class="section">
+		<div class="container postmortem-container has-text-centered">
+			<div style="margin-bottom: 3rem;">
+				<h1 class="title is-2"><i class="fas fa-skull-crossbones"></i> Incident Post Mortems</h1>
+				<p class="subtitle is-5">Learning from my failures to build better systems</p>
+			</div>
+
+			<!-- Filter Buttons -->
+			<div class="filter-buttons">
+				<button class="filter-btn active" data-filter="all">All</button>
+				<button class="filter-btn" data-filter="critical">Critical</button>
+				<button class="filter-btn" data-filter="high">High</button>
+				<button class="filter-btn" data-filter="medium">Medium</button>
+			</div>
+
+			<!-- Post Mortems List -->
+			<div id="postmortemsContainer" style="text-align: left;">
+				<!-- Post Mortems will be populated here -->
+			</div>
+
+			<!-- Empty State -->
+			<div id="emptyState" style="text-align: center; padding: 2rem;">
+				<i class="fas fa-inbox" style="font-size: 3rem; color: rgba(255, 255, 255, 0.3); margin-bottom: 1rem;"></i>
+				<p style="color: rgba(255, 255, 255, 0.5);">No incidents to display</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Report Modal -->
+	<div class="modal-overlay" id="reportModal">
+		<div class="modal-content">
+			<button class="modal-close" onclick="closeReport()">&times;</button>
+			<h2 class="modal-title" id="modalTitle">Full Report</h2>
+			<div class="modal-body" id="modalBody"></div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="content has-text-centered">
+			<p>Powered by <a href="https://mon.natsunori.com">NSNDEVENV</a></p>
+			<p>&copy; 2026 Natsunori. All rights reserved.</p>
+		</div>
+	</footer>
+
+	<script src="script.js"></script>
+	<script src="cyber-bg.js"></script>
+	<script>
+		// Sample incident post mortems data
+		const incidents = [
+			{
+				id: 1,
+				title: "CRIT-230426-01: Filesystem Corruption & Missing BIOS Boot Partition",
+				date: "2026-04-20",
+				duration: "3 hours 45 minutes",
+				severity: "critical",
+				status: "resolved",
+				summary: "System failed to boot with BIOS error code '1234F' (no boot device). Root cause was filesystem corruption combined with a missing BIOS boot partition required for BIOS+GPT configuration. All data remained intact and system was successfully recovered.",
+				rootCause: "Unclean shutdown caused filesystem corruption in the main LVM volume. When GRUB needed reinstallation after recovery, the system lacked a proper BIOS boot partition—a critical requirement when using BIOS legacy boot mode with modern GPT partition tables.",
+				timeline: [
+					{ time: "18:30", event: "System fails to boot, displays 'no boot device' message" },
+					{ time: "18:35", event: "BIOS error code 1234F confirmed" },
+					{ time: "18:45", event: "Initial diagnosis: assumed total disk failure" },
+					{ time: "19:00", event: "Discovered partition table and LVM metadata intact" },
+					{ time: "19:30", event: "Identified 'bad block bitmap checksum' filesystem errors" },
+					{ time: "19:30", event: "Started filesystem repair with fsck" },
+					{ time: "22:30", event: "Filesystem repair completed, LVM volumes now accessible" },
+					{ time: "22:30", event: "Discovered missing BIOS boot partition" },
+					{ time: "22:35", event: "Created 2MB BIOS boot partition in unused space" },
+					{ time: "23:30", event: "Successfully reinstalled GRUB bootloader" },
+					{ time: "23:35", event: "System boots successfully, all data verified intact" }
+				],
+				actions: [
+					{ text: "Plan migration to UEFI boot mode for future systems", completed: false },
+					{ text: "Document proper partitioning layout for BIOS+GPT configuration", completed: true },
+					{ text: "Implement UPS/graceful shutdown to prevent filesystem corruption", completed: true },
+					{ text: "Establish pre-production backup snapshots for quick recovery", completed: false }
+				],
+				learnings: [
+					"Filesystem corruption ≠ data loss; LVM metadata remained fully recoverable",
+					"Boot configuration matters critically—BIOS+GPT without proper partition setup is fragile",
+					"Symptoms layering across multiple components can create false impression of total failure",
+					"LVM proved resilient; corruption isolated to single layer rather than cascading"
+				],
+				fullReport: `
+					<h3>Summary</h3>
+					<p>A Linux system failed to boot, presenting "no boot device" and later a BIOS error code ("1234F"). While this initially looked like a complete disk failure, the root cause was a combination of:</p>
+					<ul>
+						<li>Filesystem corruption inside the main Linux volume</li>
+						<li>A missing bootloader configuration required for the system's disk layout</li>
+					</ul>
+					<p>No data loss was confirmed, and the system was successfully recovered.</p>
+
+					<h3>What Happened</h3>
+					<p>The system uses a fairly standard modern Linux setup:</p>
+					<ul>
+						<li>A physical disk (/dev/sda)</li>
+						<li>A partition (/dev/sda2) containing LVM (Logical Volume Manager)</li>
+						<li>Inside LVM: the main filesystem (where Linux lives)</li>
+						<li>A separate /boot partition (/dev/sda1)</li>
+					</ul>
+					<p>At some point, the system experienced an unclean shutdown or interruption (e.g. power loss or forced reset). This caused:</p>
+
+					<h4>1. Filesystem Corruption</h4>
+					<p>The main Linux filesystem became inconsistent. This showed up as:</p>
+					<ul>
+						<li>"bad block bitmap checksum" errors</li>
+						<li>Inability to mount properly</li>
+					</ul>
+					<p>This is similar to a "file allocation table" being damaged — the data is still there, but the system loses track of where things are.</p>
+
+					<h4>2. Bootloader Failure</h4>
+					<p>The system uses:</p>
+					<ul>
+						<li>BIOS (legacy boot mode)</li>
+						<li>GPT partition table (modern disk layout)</li>
+					</ul>
+					<p>This combination requires a small, special partition called a BIOS boot partition. That partition was missing.</p>
+					<p>Normally, the system may still boot if GRUB (the bootloader) was previously installed in unused disk space. However, after the corruption and repair process, GRUB needed to be reinstalled — and without that partition, it had nowhere to install itself properly.</p>
+					<p>Result: The BIOS could not find valid boot code, system returned "1234F" (no boot device)</p>
+
+					<h3>Why It Looked Worse Than It Was</h3>
+					<p>Symptoms appeared across multiple layers:</p>
+					<ul>
+						<li>Disk visible but not bootable</li>
+						<li>Filesystem errors</li>
+						<li>LVM volumes not mounting</li>
+						<li>Bootloader missing</li>
+					</ul>
+					<p>This gave the impression of full disk failure, but in reality:</p>
+					<table style="width: 100%; color: rgba(255,255,255,0.8);">
+						<tr style="border-bottom: 1px solid rgba(255,255,255,0.2); padding: 0.5rem 0;">
+							<td style="padding: 0.5rem;"><strong>Partition table</strong></td>
+							<td style="padding: 0.5rem;">Healthy</td>
+						</tr>
+						<tr style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+							<td style="padding: 0.5rem;"><strong>LVM configuration</strong></td>
+							<td style="padding: 0.5rem;">Healthy</td>
+						</tr>
+						<tr style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+							<td style="padding: 0.5rem;"><strong>Filesystem</strong></td>
+							<td style="padding: 0.5rem;">Corrupted</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.5rem;"><strong>Bootloader (GRUB)</strong></td>
+							<td style="padding: 0.5rem;">Missing</td>
+						</tr>
+					</table>
+
+					<h3>Resolution</h3>
+					<p>The recovery involved three key steps:</p>
+
+					<h4>1. Repair Filesystem</h4>
+					<p>A full filesystem check (fsck) repaired corrupted metadata and restored access to files.</p>
+
+					<h4>2. Restore Disk Structure for Booting</h4>
+					<p>A small (~2MB) BIOS boot partition was created in unused space at the start of the disk. This provides a dedicated location for GRUB on GPT disks using BIOS mode.</p>
+
+					<h4>3. Reinstall Bootloader</h4>
+					<p>GRUB was reinstalled correctly to the disk using the new partition. This restored the system's ability to boot.</p>
+
+					<h3>Root Cause Analysis</h3>
+					<p><strong>Most likely cause:</strong> Sudden shutdown or interruption during disk activity</p>
+					<p><strong>Contributing factor:</strong> System was using BIOS + GPT without a proper BIOS boot partition (fragile configuration)</p>
+
+					<h3>Recommendations</h3>
+					<ul>
+						<li>Use UEFI instead of BIOS when possible (simpler and more robust with GPT)</li>
+						<li>Ensure proper partitioning for the chosen boot mode</li>
+						<li>Avoid hard shutdowns where possible</li>
+						<li>Take snapshots/backups before major operations (especially in virtual environments)</li>
+					</ul>
+
+					<h3>Final Outcome</h3>
+					<ul>
+						<li>✓ Filesystem repaired</li>
+						<li>✓ Bootloader restored</li>
+						<li>✓ System successfully bootable again</li>
+						<li>✓ No confirmed data loss</li>
+					</ul>
+				`
+			}
+		];
+
+		// Initialize page
+		document.addEventListener('DOMContentLoaded', () => {
+			renderIncidents('all');
+
+			// Add filter button listeners
+			document.querySelectorAll('.filter-btn').forEach(btn => {
+				btn.addEventListener('click', (e) => {
+					document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+					e.target.classList.add('active');
+					renderIncidents(e.target.dataset.filter);
+				});
+			});
+		});
+
+		function renderIncidents(filter) {
+			const container = document.getElementById('postmortemsContainer');
+			const emptyState = document.getElementById('emptyState');
+			container.innerHTML = '';
+
+			const filtered = filter === 'all'
+				? incidents
+				: incidents.filter(inc => inc.severity === filter);
+
+			if (filtered.length === 0) {
+				emptyState.style.display = 'block';
+				return;
+			}
+
+			emptyState.style.display = 'none';
+
+			filtered.forEach(incident => {
+				const card = document.createElement('div');
+				card.className = 'postmortem-card';
+				card.innerHTML = `
+					<div class="postmortem-header">
+						<h2 class="postmortem-title">
+							<i class="fas fa-exclamation-triangle"></i>
+							${incident.title}
+						</h2>
+						<span class="postmortem-severity severity-${incident.severity}">
+							${incident.severity}
+						</span>
+					</div>
+
+					<div class="postmortem-metadata">
+						<div class="postmortem-meta-item">
+							<i class="fas fa-calendar"></i>
+							<span>${new Date(incident.date).toLocaleDateString()}</span>
+						</div>
+						<div class="postmortem-meta-item">
+							<i class="fas fa-hourglass-end"></i>
+							<span>${incident.duration}</span>
+						</div>
+						<div class="postmortem-meta-item">
+							<i class="fas fa-check-circle"></i>
+							<span>${incident.status}</span>
+						</div>
+					</div>
+
+					<div class="postmortem-section">
+						<div class="postmortem-section-title">
+							<i class="fas fa-book"></i> Summary
+						</div>
+						<p class="postmortem-summary">${incident.summary}</p>
+					</div>
+
+					<div class="postmortem-section">
+						<div class="postmortem-section-title">
+							<i class="fas fa-search"></i> Root Cause
+						</div>
+						<p class="postmortem-summary">${incident.rootCause}</p>
+					</div>
+
+					<div class="postmortem-section">
+						<div class="postmortem-section-title">
+							<i class="fas fa-clock"></i> Timeline
+						</div>
+						${incident.timeline.map(item => `
+							<div class="timeline-item">
+								<span class="timeline-time">${item.time}</span> - ${item.event}
+							</div>
+						`).join('')}
+					</div>
+
+					<div class="postmortem-section">
+						<div class="postmortem-section-title">
+							<i class="fas fa-tasks"></i> Action Items
+						</div>
+						${incident.actions.map(action => `
+							<div class="action-item ${action.completed ? 'completed' : ''}">
+								${action.text}
+							</div>
+						`).join('')}
+					</div>
+
+					<div class="postmortem-section">
+						<div class="postmortem-section-title">
+							<i class="fas fa-lightbulb"></i> Key Learnings
+						</div>
+						${incident.learnings.map(learning => `
+							<div class="learning-item">${learning}</div>
+						`).join('')}
+					</div>
+					${incident.fullReport ? `<button class="report-btn" onclick="openReport(${incident.id})"><i class="fas fa-file-pdf"></i> View Full Report</button>` : ''}
+				`;
+				container.appendChild(card);
+			});
+		}
+
+		function openReport(incidentId) {
+			const incident = incidents.find(inc => inc.id === incidentId);
+			if (!incident || !incident.fullReport) return;
+
+			document.getElementById('modalTitle').textContent = incident.title;
+			document.getElementById('modalBody').innerHTML = incident.fullReport;
+			document.getElementById('reportModal').classList.add('active');
+		}
+
+		function closeReport() {
+			document.getElementById('reportModal').classList.remove('active');
+		}
+
+		// Close modal when clicking outside
+		document.getElementById('reportModal')?.addEventListener('click', (e) => {
+			if (e.target.id === 'reportModal') {
+				closeReport();
+			}
+		});
+
+		// Close modal on Escape key
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape') {
+				closeReport();
+			}
+		});
+	</script>
+</body>
+</html>
